@@ -5,30 +5,37 @@ import keyboard  # Necessário para detectar pressionamento de teclas
 # Lista das teclas de seta
 setas = ['up', 'right', 'down', 'left']
 executando = True  # Define o estado inicial como 'executando'
+z_ativado = False  # Variável para alternar o estado da tecla "z"
 
-# Variável para detectar o pressionamento das teclas
-toggle_pausar = False
-
-while True:
-    # Detecta o pressionamento da tecla "P" e "S" em sequência
-    if keyboard.is_pressed('p') and not toggle_pausar:
-        time.sleep(0.3)  # Espera um pouco para evitar múltiplos cliques rápidos
-        toggle_pausar = True
+def verificar_pausa():
+    global executando
+    if keyboard.is_pressed('p') and keyboard.is_pressed('s'):
+        time.sleep(0.3)  # Evita múltiplos cliques rápidos
+        executando = not executando  # Alterna entre pausar e continuar
         print(f'Código {"pausado" if not executando else "iniciado"}')
 
-    if keyboard.is_pressed('s') and toggle_pausar:
-        time.sleep(0.3)  # Espera um pouco para evitar múltiplos cliques rápidos
-        executando = not executando  # Alterna entre pausar e continuar
-        toggle_pausar = False  # Reseta a variável para permitir a troca da tecla P
+def verificar_z():
+    global z_ativado
+    if keyboard.is_pressed("z"):
+        time.sleep(0.3)  # Evita múltiplas ativações rápidas
+        z_ativado = not z_ativado  # Alterna entre ativado/desativado
+        print(f'Pressionamento automático de "z" {"ativado" if z_ativado else "desativado"}')
 
-  
+while True:
+    verificar_pausa()
+    verificar_z()
 
-    # Se o código estiver em execução, executa a sequência
+    if z_ativado:
+        pyautogui.press("z")  # Pressiona a tecla "z" repetidamente
+        time.sleep(0.2)  # Pequeno intervalo entre pressões para não sobrecarregar
+
     if executando:
         for seta in setas:
-            pyautogui.keyDown(seta)  # Mantém a tecla pressionada
-            time.sleep(3)  # Aguarda 3 segundos com a tecla pressionada
-            pyautogui.keyUp(seta)  # Solta a tecla
-            time.sleep(1)  # Intervalo de 1 segundo entre as teclas
+            verificar_pausa()
+            verificar_z()
+            pyautogui.keyDown(seta)
+            time.sleep(3)
+            pyautogui.keyUp(seta)
+            time.sleep(1)
     else:
-        time.sleep(1)  # Aguarda um tempo caso esteja pausado
+        time.sleep(0.1)  # Aguarda um tempo menor para resposta mais rápida
