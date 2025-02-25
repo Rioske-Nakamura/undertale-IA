@@ -26,7 +26,7 @@ while True:
     verificar_z()
 
     if z_ativado:
-        pyautogui.press("z")  # Pressiona a tecla "z" repetidamente
+        pyautogui.press("z")  # Pressiona a tecla "z" repetidamente 
         time.sleep(0.2)  # Pequeno intervalo entre pressões para não sobrecarregar
 
     if executando:
