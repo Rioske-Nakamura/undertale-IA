@@ -34,8 +34,8 @@ while True:
             verificar_pausa()
             verificar_z()
             pyautogui.keyDown(seta)
-            time.sleep(3)
+            time.sleep(2)
             pyautogui.keyUp(seta)
-            time.sleep(1)
+            time.sleep(2)
     else:
         time.sleep(0.1)  # Aguarda um tempo menor para resposta mais rápida
